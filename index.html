@@ -8,8 +8,6 @@
 :root{
   --bg:#f7f6f3; --panel:#fff; --ink:#1f2430; --sub:#6b7280; --line:#e5e3de;
   --navy:#1f3864; --accent:#b76e79;
-  --c-common:#4a6fa5; --c-movie:#c77b4e; --c-es:#6e9e6b; --c-shop:#8c6bb1;
-  --c-am:#b15b78; --c-fg:#3f8f8b; --c-party:#7a7a7a;
   --row:34px; --labelw:300px; --cellw:76px;
 }
 *{box-sizing:border-box}
@@ -19,7 +17,7 @@ body{margin:0;background:var(--bg);color:var(--ink);
 
 header{padding:26px 32px 18px;background:linear-gradient(135deg,#1f3864 0%,#2e5496 100%);color:#fff}
 header h1{margin:0;font-size:22px;letter-spacing:.05em;font-weight:700}
-header .meta{margin-top:6px;font-size:12.5px;opacity:.82;letter-spacing:.03em}
+header .meta{margin-top:6px;font-size:12.5px;opacity:.82;letter-spacing:.03em;line-height:1.75}
 header .rule{width:56px;height:3px;background:var(--accent);margin-top:14px;border-radius:2px}
 
 .tabs{display:flex;gap:4px;margin:0 32px;border-bottom:1px solid var(--line)}
@@ -89,7 +87,10 @@ table#gantt{border-collapse:separate;border-spacing:0;width:max-content;min-widt
 #gantt th,#gantt td{font-size:12px;white-space:nowrap}
 #gantt thead th{position:sticky;top:0;z-index:6;background:var(--navy);color:#fff;font-weight:600;
   padding:7px 8px;border-right:1px solid rgba(255,255,255,.14);letter-spacing:.03em}
-#gantt thead tr:nth-child(2) th{top:31px;background:#2e5496;font-size:11px;font-weight:500}
+/* 前半・後半：薄い水色 */
+#gantt thead tr:nth-child(2) th{top:31px;background:#dbeafa;color:#2b4b74;font-size:11px;font-weight:600;
+  border-right:1px solid #fff;border-bottom:1px solid #c5daf0}
+#gantt thead tr:nth-child(2) th.ev{background:#f7dcdc;color:#a3373a}
 .sticky-l{position:sticky;left:0;background:var(--panel);z-index:4;box-shadow:1px 0 0 var(--line);
   text-align:left;padding:5px 12px;width:var(--labelw);max-width:var(--labelw);white-space:normal}
 #gantt thead .sticky-l{background:var(--navy);z-index:8}
@@ -155,10 +156,28 @@ table.data th,table.data td{font-size:12px;padding:8px 12px;border-bottom:1px so
 table.data thead th{background:var(--navy);color:#fff;font-weight:600;text-align:left;
   position:sticky;top:0;z-index:2}
 table.data td.num{text-align:right;font-variant-numeric:tabular-nums}
-table.data tr.catrow td{background:#f3f1ec;font-weight:700;color:var(--navy)}
 table.data tbody tr:hover td{background:#faf9f7}
 table.data tr.total td{background:#e9edf5;font-weight:700;font-size:13px;color:var(--navy);border-top:2px solid var(--navy)}
 .scroller{max-height:62vh;overflow:auto;border:1px solid var(--line);border-radius:10px;background:#fff}
+
+/* 予算：開閉 */
+table.data tr.catrow td{background:#f3f1ec;font-weight:700;color:var(--navy);cursor:pointer;user-select:none}
+table.data tr.catrow:hover td{background:#eceae4}
+table.data tr.catrow .cx{font-size:9px;color:var(--sub);display:inline-block;transition:transform .18s;margin-right:7px}
+table.data tr.catrow.closed .cx{transform:rotate(-90deg)}
+table.data tr.item td{cursor:pointer}
+table.data tr.item.open td{background:#fbf8f7 !important}
+table.data tr.item.open td:first-child{box-shadow:inset 3px 0 0 var(--accent)}
+table.data tr.item .ix{font-size:9px;color:var(--sub);float:right;margin-left:8px;transition:transform .18s}
+table.data tr.item.open .ix{transform:rotate(90deg);color:var(--accent)}
+table.data tr.bdetail>td{padding:0;background:#fbf8f7;border-bottom:1px solid var(--line)}
+.bpanel{padding:13px 18px;border-left:3px solid var(--accent);white-space:normal}
+.bgrid{display:grid;grid-template-columns:74px 1fr;gap:6px 14px;font-size:12px;line-height:1.6}
+.bgrid dt{color:var(--sub);font-size:10.5px;letter-spacing:.06em;font-weight:600;padding-top:2px}
+.bgrid dd{margin:0}
+.bcalc{font-variant-numeric:tabular-nums}
+.bshare{display:inline-block;background:rgba(31,56,100,.08);color:var(--navy);border-radius:5px;
+  padding:2px 9px;font-size:10.5px;font-weight:700}
 
 .bars{display:flex;flex-direction:column;gap:9px}
 .brow{display:grid;grid-template-columns:150px 1fr 110px;align-items:center;gap:12px;font-size:12px}
@@ -186,7 +205,6 @@ ul.clean li::marker{color:var(--accent)}
 footer{margin-top:26px;font-size:11px;color:var(--sub);line-height:1.8;border-top:1px solid var(--line);padding-top:14px}
 .empty{padding:40px;text-align:center;color:var(--sub);font-size:13px}
 
-/* ============ スマホ ============ */
 @media(max-width:820px){
   :root{--row:30px;--labelw:150px;--cellw:54px}
   header{padding:16px 16px 12px}
@@ -202,7 +220,7 @@ footer{margin-top:26px;font-size:11px;color:var(--sub);line-height:1.8;border-to
   .kpi .n{font-size:15px}
   .kpi .l{font-size:8.5px;white-space:normal;line-height:1.25;overflow:visible;letter-spacing:-.02em}
   .controls{overflow:hidden}
-  .controls>summary{display:flex!important;list-style:none;padding:12px 16px;font-size:12.5px;
+  .controls>summary{display:flex !important;list-style:none;padding:12px 16px;font-size:12.5px;
     font-weight:700;color:var(--navy);cursor:pointer;align-items:center;justify-content:space-between}
   .controls>summary::-webkit-details-marker{display:none}
   .controls>summary::after{content:"▼";font-size:9px;color:var(--sub)}
@@ -229,6 +247,8 @@ footer{margin-top:26px;font-size:11px;color:var(--sub);line-height:1.8;border-to
   .card h2 .sub{display:block;margin:3px 0 0}
   .scroller{max-height:none}
   table.data th,table.data td{padding:7px 8px;font-size:11px}
+  .bgrid{grid-template-columns:60px 1fr;font-size:11.5px}
+  .bpanel{padding:11px 13px}
   .brow{grid-template-columns:1fr 90px;grid-template-areas:"name name" "bar amt";gap:4px 8px;
     padding-bottom:9px;border-bottom:1px solid #f5f3ee}
   .brow>div:first-child{grid-area:name}
@@ -248,7 +268,7 @@ footer{margin-top:26px;font-size:11px;color:var(--sub);line-height:1.8;border-to
 <body>
 <header>
   <h1>19期 INGS AWARD</h1>
-  <div class="meta">2027年2月16日（火）／ バトゥール東京　｜　ラーメン事業部 15:00-16:30・レストラン事業部 17:30-19:00</div>
+  <div class="meta">2027年2月16日（火）／ バトゥール東京<br>ラーメン事業部 15:00-16:30　｜　レストラン事業部 17:30-18:00</div>
   <div class="rule"></div>
 </header>
 
@@ -261,7 +281,6 @@ footer{margin-top:26px;font-size:11px;color:var(--sub);line-height:1.8;border-to
 
 <div class="wrap">
 
-<!-- ============ ガンチャ ============ -->
 <section id="p-gantt" class="pane active">
   <div class="kpis">
     <div class="kpi"><div class="n" id="k-total">–</div><div class="l">全タスク</div></div>
@@ -325,7 +344,6 @@ footer{margin-top:26px;font-size:11px;color:var(--sub);line-height:1.8;border-to
   <div class="legend" id="legend"></div>
 </section>
 
-<!-- ============ 予算 ============ -->
 <section id="p-budget" class="pane">
   <div class="kpis">
     <div class="kpi"><div class="n" id="b-total">–</div><div class="l">予算合計</div></div>
@@ -352,18 +370,17 @@ footer{margin-top:26px;font-size:11px;color:var(--sub);line-height:1.8;border-to
     </div>
   </div>
   <div class="card">
-    <h2>費用明細<span class="sub">単価 × 数量</span></h2><div class="hr"></div>
+    <h2>費用明細<span class="sub">項目をタップで詳細／カテゴリ行をタップで開閉</span></h2><div class="hr"></div>
     <div class="scroller">
       <table class="data" id="btable">
         <thead><tr><th>カテゴリ</th><th>項目</th><th style="text-align:right">単価</th>
-          <th style="text-align:right">数量</th><th style="text-align:right">金額</th><th>取引先・備考</th></tr></thead>
+          <th style="text-align:right">数量</th><th style="text-align:right">金額</th></tr></thead>
         <tbody></tbody>
       </table>
     </div>
   </div>
 </section>
 
-<!-- ============ プログラム ============ -->
 <section id="p-program" class="pane">
   <div class="cols">
     <div class="card">
@@ -400,7 +417,6 @@ footer{margin-top:26px;font-size:11px;color:var(--sub);line-height:1.8;border-to
   </div>
 </section>
 
-<!-- ============ 参加者 ============ -->
 <section id="p-people" class="pane">
   <div class="kpis">
     <div class="kpi"><div class="n">215</div><div class="l">対象者数</div></div>
@@ -428,74 +444,71 @@ footer{margin-top:26px;font-size:11px;color:var(--sub);line-height:1.8;border-to
 </section>
 
 <footer>
-  期間は半月単位（前半＝1〜15日／後半＝16日〜月末）。「着手済」タスクは9月前半起点として表示しています。<br>
+  期間は半月単位（前半＝1〜15日／後半＝16日〜月末）。「着手済」タスクは9月前半起点として表示しています。最終更新データ：INGS AWARD_費用支出・予算集計 (1).xlsx<br>
   データ出典：INGS AWARD_費用支出・予算集計.xlsx（タスク一覧／★最新★2027_予算／当日プログラム／参加者一覧）
 </footer>
 </div>
 
 <script>
-/* ===== 期間 ===== */
 var PERIODS=[
+ {y:2026,m:8,h:"前半"},{y:2026,m:8,h:"後半"},
  {y:2026,m:9,h:"前半"},{y:2026,m:9,h:"後半"},{y:2026,m:10,h:"前半"},{y:2026,m:10,h:"後半"},
  {y:2026,m:11,h:"前半"},{y:2026,m:11,h:"後半"},{y:2026,m:12,h:"前半"},{y:2026,m:12,h:"後半"},
  {y:2027,m:1,h:"前半"},{y:2027,m:1,h:"後半"},{y:2027,m:2,h:"前半"},{y:2027,m:2,h:"後半"}];
-var EVENT_IDX=11;
+var EVENT_IDX=13;
 
 var DEPTS={"共通":"#4a6fa5","動画制作":"#c77b4e","Excellentスタッフ":"#6e9e6b","優秀店舗":"#8c6bb1",
   "優秀AM":"#b15b78","外国人":"#3f8f8b","運営打ち上げ":"#7a7a7a"};
 
-/* 担当者の表示順マスター */
 var MEMBER_ORDER=["全員","磯野","高木","前沢","瀨田","鳴海","佐瀬","佐々木","吉田"];
 function mRank(m){var i=MEMBER_ORDER.indexOf(m);return i<0?999:i;}
 function sortMembers(a){return a.slice().sort(function(x,y){return mRank(x)-mRank(y)||x.localeCompare(y,"ja");});}
 
-/* dept, task, members, startLabel, endLabel, startIdx, endIdx, status, note, wf */
 var TASKS=[
-["共通","会場予約",["前沢"],"確定済","2/16確定",0,0,"完了","2/16 10:00–20:00で確定。人数確定連絡は2/13 20:00まで",true],
-["共通","会場下見",["高木","前沢","瀨田"],"1月","1月",8,9,"未着手","当日の流れ・音響確認／水は受付時に渡す",false],
-["共通","当日までの準備スケジュール決定",["全員"],"9月","9月",0,0,"進行中","ミーティングで決定",false],
-["共通","プログラム検討",["全員"],"9月","10月末",0,3,"進行中","コンテンツ詳細決め",false],
-["共通","取引会社への副賞打診",["磯野"],"10月","10月末",2,3,"未着手","各部長に確認",false],
-["共通","インビテーション作成・発送",["高木","瀨田","佐瀬","吉田"],"9月","10月中旬着",0,2,"未着手","10月頭発送完了→10月中旬着／社員総会で開催日を共有",false],
-["共通","専用サイト作成（Canva）",["鳴海"],"9月","10月末",0,3,"未着手","インビテーション配布前までに準備。カウントダウン検討",false],
-["共通","景品購入",["前沢","鳴海","佐々木"],"1月","1月末",8,9,"未着手","",true],
-["共通","トロフィー発注",["前沢","鳴海","佐々木"],"1月","1月末",8,9,"未着手","株式会社 立川徽章",true],
-["共通","参加者確認アンケート作成（事前）",["前沢","鳴海"],"11月","12月末",4,7,"未着手","Googleフォーム",false],
-["共通","感想アンケート作成（事後）",["前沢","鳴海"],"1月","1月末",8,9,"未着手","Googleフォーム",false],
-["共通","参加者一覧表作成",["瀨田"],"1月","1月中旬",8,8,"未着手","氏名フリガナ付き",false],
-["共通","参加者名札作成",["高木","瀨田","佐瀬"],"1月後半","2月上旬",9,10,"未着手","",true],
-["共通","INGS NEWS（簡易社内報）作成",["高木"],"12月","1月末",6,9,"未着手","AWARD専用号",false],
-["共通","就活セミナーフライヤー作成",["高木","佐々木"],"10月","1月末",2,9,"未着手","日程：3月2回・4月2回（詳細後日）",false],
-["共通","ノベルティ作成",["前沢","佐瀬"],"着手済","12月末納品",0,7,"進行中","11月末デザイン決定／発送に2〜3週間",true],
-["共通","INGSバック作成",["前沢","佐瀬"],"着手済","12月末納品",0,7,"進行中","11月末デザイン決定／発送に2〜3週間",true],
-["共通","海里委員会メンバー招集",["佐々木"],"完了","—",0,0,"完了","",false],
-["共通","表彰状購入",["前沢"],"10月","10月末",2,3,"未着手","内定証と同じもの",true],
-["共通","各種封入作業",["全員"],"2月","2月上旬",10,10,"未着手","運搬は当日",false],
-["動画制作","OP動画（外注）",["磯野","高木","前沢"],"9月","2月上旬",0,10,"進行中","見積依頼＋打ち合わせ",true],
-["動画制作","最優秀店舗 動画",["高木","鳴海"],"11月","12月上旬",4,6,"未着手","Canvaで作成／評価基準を先に示す構成を検討",false],
-["動画制作","最優秀AM 動画",["佐瀬","佐々木"],"11月","2月上旬",4,10,"未着手","Canvaで作成／評価基準を先に示す構成を検討",false],
-["動画制作","外国人財特別賞 動画",["瀨田","佐々木"],"11月","2月上旬",4,10,"未着手","Canvaで作成／評価基準を先に示す構成を検討",false],
-["Excellentスタッフ","紹介スライド作成→動画化",["前沢","鳴海","瀨田","佐瀬"],"10月後半","2月上旬",3,10,"未着手","先にデザイン枠のみ作成",false],
-["Excellentスタッフ","選出アンケート作成→配布・回収",["前沢"],"着手済","9/1配布",0,2,"進行中","9/1に配布できる状態",false],
-["Excellentスタッフ","選出理由カード作成",["高木","鳴海","瀨田"],"11月","2月上旬",4,10,"未着手","",false],
-["Excellentスタッフ","抽選券作成・抽選箱発注",["前沢"],"1月","2月上旬",8,10,"未着手","ブランドごとに色分け／中が見えるタイプ",false],
-["Excellentスタッフ","特製名札作成",["鳴海","瀨田"],"11月","2月上旬",4,10,"未着手","レストランのみ",false],
-["Excellentスタッフ","表彰状作成",["佐瀬","前沢","鳴海","瀨田"],"11月","2月上旬",4,10,"未着手","印刷は本社で",false],
-["Excellentスタッフ","制服発注",["前沢"],"10月","2月上旬",2,10,"未着手","三光白衣・あゆむ",true],
-["Excellentスタッフ","制服サイズ・スペル確認",["高木","前沢","瀨田"],"10月","2月上旬",2,10,"未着手","",false],
-["優秀店舗","表彰計算",["高木"],"10月","10月末",2,3,"未着手","",false],
-["優秀店舗","表彰状作成",["前沢","鳴海","瀨田","佐瀬"],"11月","2月上旬",4,10,"未着手","印刷は本社で",false],
-["優秀AM","表彰計算",["高木"],"10月","10月末",2,3,"未着手","",false],
-["優秀AM","表彰状作成",["前沢","鳴海","瀨田","佐瀬"],"11月","2月上旬",4,10,"未着手","印刷は本社で",false],
-["外国人","表彰選定方法決め",["磯野"],"10月","10月末",2,3,"未着手","営業部と検討",false],
-["外国人","表彰状作成",["前沢","鳴海","瀨田","佐瀬"],"11月","2月上旬",4,10,"未着手","印刷は本社で",false],
-["運営打ち上げ","費用申請",["磯野"],"1月","1月末",8,9,"未着手","",true]
+["共通","会場予約",["前沢"],"確定済","2/16確定",2,2,"完了","2/16 10:00–20:00で確定。人数確定連絡は2/13 20:00まで",true],
+["共通","会場下見",["高木","前沢","瀨田"],"1月","1月",10,11,"未着手","当日の流れ・音響確認／水は受付時に渡す",false],
+["共通","当日までの準備スケジュール決定",["全員"],"8月","—",0,1,"進行中","ミーティングで決定",false],
+["共通","プログラム検討",["全員"],"9月","10月末",2,5,"進行中","コンテンツ詳細決め",false],
+["共通","取引会社への副賞打診",["磯野"],"10月","10月末",4,5,"未着手","各部長に確認",false],
+["共通","インビテーション作成・発送",["高木","佐瀬","吉田"],"9月","10月中旬着",2,4,"未着手","招待状／店舗郵送まで。10月頭発送完了→10月中旬着。社員総会（10/22）でAWARD開催日とインビテーションについて共有",false],
+["共通","専用サイト作成（Canva）",["鳴海"],"9月","10月末",2,5,"未着手","インビテーション配布前までに準備。カウントダウン検討",false],
+["共通","景品購入",["前沢","鳴海","佐々木"],"1月","1月末",10,11,"未着手","",true],
+["共通","トロフィー発注",["前沢","鳴海","佐々木"],"1月","1月末",10,11,"未着手","株式会社 立川徽章",true],
+["共通","参加者確認アンケート作成（事前）",["前沢","鳴海"],"11月","12月末",6,9,"未着手","Googleフォーム",false],
+["共通","感想アンケート作成（事後）",["前沢","鳴海"],"1月","1月末",10,11,"未着手","Googleフォーム",false],
+["共通","参加者一覧表作成",["瀨田"],"1月","1月中旬",10,10,"未着手","氏名フリガナ付き",false],
+["共通","参加者名札作成",["高木","瀨田","佐瀬"],"1月後半","2月上旬",11,12,"未着手","",true],
+["共通","INGS NEWS（簡易社内報）作成",["高木"],"12月","1月末",8,11,"未着手","AWARD専用号",false],
+["共通","就活セミナーフライヤー作成",["高木","佐々木"],"10月","1月末",4,11,"未着手","日程：3月2回・4月2回（詳細後日）",false],
+["共通","ノベルティ作成",["前沢","佐瀬"],"着手済","12月末納品",2,9,"進行中","11月末デザイン決定／発送に2〜3週間",true],
+["共通","INGSバック作成",["前沢","佐瀬"],"着手済","12月末納品",2,9,"進行中","11月末デザイン決定／発送に2〜3週間",true],
+["共通","海里委員会メンバー招集",["佐々木"],"完了","—",2,2,"完了","",false],
+["共通","表彰状購入",["前沢"],"10月","10月末",4,5,"未着手","内定証と同じもの",true],
+["共通","各種封入作業",["全員"],"2月","2月上旬",12,12,"未着手","運搬は当日",false],
+["動画制作","OP動画（外注）",["磯野","高木","前沢"],"9月","2月上旬",2,12,"進行中","外注想定（見積依頼＋打ち合わせ）／9月24日 12:00〜。平野さん or 横山君に依頼。各事業部にOP確認",true],
+["動画制作","最優秀店舗 動画",["高木","鳴海"],"11月","12月上旬",6,8,"未着手","Canvaで作成／評価基準を先に示す構成を検討",false],
+["動画制作","最優秀AM 動画",["佐瀬","佐々木"],"11月","2月上旬",6,12,"未着手","Canvaで作成／評価基準を先に示す構成を検討",false],
+["動画制作","外国人財特別賞 動画",["瀨田","佐々木"],"11月","2月上旬",6,12,"未着手","Canvaで作成／評価基準を先に示す構成を検討",false],
+["Excellentスタッフ","紹介スライド作成→動画化",["前沢","鳴海","瀨田","佐瀬"],"10月後半","2月上旬",5,12,"未着手","先にデザイン枠のみ作成。平野さん or 横山君に依頼／各事業部にOP確認（レストラン：佐瀬）",false],
+["Excellentスタッフ","選出アンケート作成→配布・回収",["前沢"],"着手済","9/1配布",2,4,"進行中","9/1に配布できる状態",false],
+["Excellentスタッフ","選出理由カード作成",["高木","鳴海","瀨田"],"11月","2月上旬",6,12,"未着手","磯野以外",false],
+["Excellentスタッフ","抽選券作成・抽選箱発注",["前沢"],"1月","2月上旬",10,12,"未着手","たためるもの。ブランドごとに色を変えて中が見えるタイプを検討",false],
+["Excellentスタッフ","特製名札作成",["鳴海","瀨田"],"11月","2月上旬",6,12,"未着手","レストランのみ",false],
+["Excellentスタッフ","表彰状作成",["佐瀬","前沢","鳴海","瀨田"],"11月","2月上旬",6,12,"未着手","印刷は本社で",false],
+["Excellentスタッフ","制服発注",["前沢"],"10月","2月上旬",4,12,"未着手","三光白衣・あゆむ",true],
+["Excellentスタッフ","制服サイズ・スペル確認",["高木","前沢","瀨田"],"10月","2月上旬",4,12,"未着手","",false],
+["優秀店舗","表彰計算",["高木"],"10月","10月末",4,5,"未着手","",false],
+["優秀店舗","表彰状作成",["前沢","鳴海","瀨田","佐瀬"],"11月","2月上旬",6,12,"未着手","印刷は本社で",false],
+["優秀AM","表彰計算",["高木"],"10月","10月末",4,5,"未着手","",false],
+["優秀AM","表彰状作成",["前沢","鳴海","瀨田","佐瀬"],"11月","2月上旬",6,12,"未着手","印刷は本社で",false],
+["外国人","表彰選定方法決め",["磯野"],"10月","10月末",4,5,"未着手","営業部と検討",false],
+["外国人","表彰状作成",["前沢","鳴海","瀨田","佐瀬"],"11月","2月上旬",6,12,"未着手","印刷は本社で",false],
+["運営打ち上げ","費用申請",["磯野"],"1月","1月末",10,11,"未着手","",true]
 ];
 
 var state={depts:new Set(Object.keys(DEPTS)),member:"",status:"",q:"",sort:"dept"};
 function $(s){return document.querySelector(s);}
 
-/* ===== ヘッダー ===== */
 function buildHeader(){
   var hM=$("#hMonth"),hH=$("#hHalf"),i=0;
   while(i<PERIODS.length){
@@ -507,7 +520,7 @@ function buildHeader(){
   PERIODS.forEach(function(p,idx){
     var th=document.createElement("th");
     th.textContent=(idx===EVENT_IDX)?"後半 ★":p.h;
-    if(idx===EVENT_IDX)th.style.background="#c0392b";
+    if(idx===EVENT_IDX)th.className="ev";
     hH.appendChild(th);
   });
 }
@@ -522,7 +535,6 @@ function cells(rowEl){
 }
 function statusClass(s){return s==="完了"?"done":s==="進行中"?"wip":"";}
 
-/* ===== 描画 ===== */
 function render(){
   var tb=$("#body");tb.innerHTML="";
   var q=state.q.trim();
@@ -609,12 +621,11 @@ function updateKpis(){
   $("#k-done").textContent=c("完了");
   $("#k-wip").textContent=c("進行中");
   $("#k-todo").textContent=c("未着手");
-  $("#k-feb").textContent=TASKS.filter(function(t){return t[6]>=10;}).length;
+  $("#k-feb").textContent=TASKS.filter(function(t){return t[6]>=12;}).length;
   var d=Math.ceil((new Date(2027,1,16)-new Date())/864e5);
   $("#k-days").textContent=d>0?d:"開催済";
 }
 
-/* ===== コントロール ===== */
 function updateDeptLabel(){
   var all=Object.keys(DEPTS),n=state.depts.size,arr=Array.from(state.depts);
   $("#deptLabel").textContent=n===all.length?"すべて（"+n+"）":n===0?"選択なし":
@@ -673,7 +684,6 @@ function buildControls(){
     '<span style="color:var(--accent);font-weight:600">◆＝費用申請（WF）必要</span>';
 }
 
-/* ===== タブ ===== */
 Array.prototype.forEach.call(document.querySelectorAll(".tab"),function(t){
   t.onclick=function(){
     Array.prototype.forEach.call(document.querySelectorAll(".tab"),function(x){x.classList.remove("active");});
@@ -684,7 +694,6 @@ Array.prototype.forEach.call(document.querySelectorAll(".tab"),function(t){
   };
 });
 
-/* ===== 予算 ===== */
 var CATCOLOR={"会場":"#4a6fa5","動画":"#c77b4e","Excellentスタッフ賞":"#6e9e6b","店舗賞":"#8c6bb1",
   "AM賞":"#b15b78","外国人特別賞":"#3f8f8b","その他備品":"#a8894a","打ち上げ":"#7a7a7a","その他":"#9aa3ad"};
 var BUDGET=[
@@ -740,15 +749,63 @@ function renderBudget(){
       '<div class="amt">'+yen(x[1])+'<span style="opacity:.6"> / '+(x[1]/TOTAL*100).toFixed(1)+'%</span></div></div>';
   }).join("");
 
-  var last=null,html="";
+  var tb=document.querySelector("#btable tbody");
+  tb.innerHTML="";
+  var last=null,group=null;
+
+  function bindCat(catRow,rowsArr){
+    catRow.onclick=function(){
+      var closed=catRow.classList.contains("closed");
+      catRow.classList.toggle("closed",!closed);
+      rowsArr.forEach(function(r){
+        if(r.cls==="bdetail"){
+          if(!closed){r.el.style.display="none";r.owner.classList.remove("open");}
+        }else{
+          r.el.style.display=closed?"table-row":"none";
+        }
+      });
+    };
+  }
+
   BUDGET.forEach(function(b){
-    if(b[0]!==last){html+='<tr class="catrow"><td colspan="6">'+b[0]+'　<span style="font-weight:400;color:var(--sub)">小計 '+yen(cat[b[0]])+'</span></td></tr>';last=b[0];}
-    html+='<tr><td></td><td>'+b[1]+'</td><td class="num">'+yen(b[2])+'</td><td class="num">'+b[3].toLocaleString()+'</td>'+
-      '<td class="num" style="font-weight:600">'+yen(b[2]*b[3])+'</td>'+
-      '<td style="color:var(--sub);white-space:normal;font-size:11px">'+b[4]+'</td></tr>';
+    if(b[0]!==last){
+      if(group)bindCat(group.cat,group.rows);
+      var cr=document.createElement("tr");cr.className="catrow";
+      var ctd=document.createElement("td");ctd.colSpan=5;
+      ctd.innerHTML='<span class="cx">▼</span>'+b[0]+
+        '　<span style="font-weight:400;color:var(--sub)">小計 '+yen(cat[b[0]])+
+        '（'+(cat[b[0]]/TOTAL*100).toFixed(1)+'%）</span>';
+      cr.appendChild(ctd);tb.appendChild(cr);
+      group={cat:cr,rows:[]};last=b[0];
+    }
+    var amt=b[2]*b[3];
+    var tr=document.createElement("tr");tr.className="item";
+    tr.innerHTML='<td></td><td>'+b[1]+'<span class="ix">▶</span></td>'+
+      '<td class="num">'+yen(b[2])+'</td><td class="num">'+b[3].toLocaleString()+'</td>'+
+      '<td class="num" style="font-weight:600">'+yen(amt)+'</td>';
+    var dr=document.createElement("tr");dr.className="bdetail";dr.style.display="none";
+    var dtd=document.createElement("td");dtd.colSpan=5;
+    dtd.innerHTML='<div class="bpanel"><dl class="bgrid">'+
+      '<dt>カテゴリ</dt><dd><i class="deptbar" style="background:'+(CATCOLOR[b[0]]||"#999")+'"></i> '+b[0]+'</dd>'+
+      '<dt>計算</dt><dd class="bcalc">'+yen(b[2])+' × '+b[3].toLocaleString()+' ＝ <b>'+yen(amt)+'</b></dd>'+
+      '<dt>構成比</dt><dd><span class="bshare">全体の '+(amt/TOTAL*100).toFixed(2)+'%</span>'+
+      '　<span style="color:var(--sub);font-size:11px">'+b[0]+'内 '+(amt/cat[b[0]]*100).toFixed(1)+'%</span></dd>'+
+      '<dt>1人あたり</dt><dd class="bcalc">'+yen(amt/HEAD)+'　<span style="color:var(--sub);font-size:11px">（172名想定）</span></dd>'+
+      (b[4]?'<dt>備考</dt><dd>'+b[4]+'</dd>':'')+'</dl></div>';
+    dr.appendChild(dtd);
+    tr.onclick=function(){
+      var open=dr.style.display!=="none";
+      dr.style.display=open?"none":"table-row";
+      tr.classList.toggle("open",!open);
+    };
+    tb.appendChild(tr);tb.appendChild(dr);
+    group.rows.push({el:tr,cls:"item"},{el:dr,cls:"bdetail",owner:tr});
   });
-  html+='<tr class="total"><td colspan="4">合計</td><td class="num">'+yen(TOTAL)+'</td><td></td></tr>';
-  document.querySelector("#btable tbody").innerHTML=html;
+  if(group)bindCat(group.cat,group.rows);
+
+  var totr=document.createElement("tr");totr.className="total";
+  totr.innerHTML='<td colspan="4">合計</td><td class="num">'+yen(TOTAL)+'</td>';
+  tb.appendChild(totr);
 
   $("#b-total").textContent=Math.round(TOTAL).toLocaleString();
   $("#b-diff").textContent="+"+Math.round(TOTAL-PLAN).toLocaleString();
@@ -757,7 +814,6 @@ function renderBudget(){
     "<b>"+yen(TOTAL-PLAN)+"（"+((TOTAL/PLAN-1)*100).toFixed(0)+"%）の超過</b>です。削減または協賛獲得が必要。";
 }
 
-/* ===== プログラム ===== */
 var TIMELINE=[
  ["10:00 – 14:30","準備＆リハーサル","必要に応じて短縮。会場は最大12時間利用可能",false],
  ["14:30 – 15:00","入場","受付で水を配布（席に置くのはNG）",false],
@@ -770,7 +826,6 @@ $("#tl").innerHTML=TIMELINE.map(function(t){
   return '<div class="tlitem'+(t[3]?" hl":"")+'"><div class="tltime">'+t[0]+'</div>'+
     '<div class="tltitle">'+t[1]+'</div><div class="tldesc">'+t[2]+'</div></div>';}).join("");
 
-/* ===== 参加者 ===== */
 var PEOPLE=[
  ["運営","—",7,"磯野・高木・前沢・瀨田・鳴海・佐瀬・佐々木"],
  ["役員","—",3,"青柳・持木・塚本"],
@@ -797,9 +852,8 @@ var PEOPLE=[
     .map(function(m){return '<span class="mtag" style="font-size:12px;padding:6px 14px">'+m+'</span>';}).join("");
 })();
 
-/* ===== 起動 ===== */
 if(window.matchMedia("(max-width:820px)").matches){
-  var c=document.querySelector(".controls");if(c)c.removeAttribute("open");
+  var c0=document.querySelector(".controls");if(c0)c0.removeAttribute("open");
 }
 buildHeader();
 buildControls();
